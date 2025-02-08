@@ -6,60 +6,63 @@ using Zenject;
 namespace Pryanik.DB.ModelControllers
 {
 
-    public interface IThemeController : ModelControllerBase<Theme>
+    public interface IAnswerController : ModelControllerBase<Answer>
     {
-        IEnumerable<Theme> GetAll();
+        IEnumerable<Answer> GetByQuestionId(int questionId);
     }
-    public class ThemeController : IThemeController
+    public class AnswerController : IAnswerController
     {
-        private readonly IDbConnectionManager _connectionManager;
         
+        private IDbConnectionManager _connectionManager;
+
         [Inject]
-        public ThemeController(IDbConnectionManager connectionManager)
-        {
+        private void Init(IDbConnectionManager connectionManager)
+        { 
             _connectionManager = connectionManager;
         }
-        
-        public IEnumerable<Theme> GetAll()
+
+        public IEnumerable<Answer> GetByQuestionId(int questionId)
         {
             using(var con = _connectionManager.GetConnection())
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = "SELECT * FROM Theme;";
+                    command.CommandText = $"SELECT FROM Answer WHERE question_id = {questionId};";
                     var reader = command.ExecuteReader();
                     using (reader)
                     {
                         while (reader.Read())
                         {
                             var id = reader.GetInt32(0);
-                            var name = reader.GetString(1);
-                            yield return new Theme(id, name);
+                            var text = reader.GetString(2);
+                            var isCorrect = reader.GetInt32(3);
+                            
+                            yield return new Answer(id,questionId,text,isCorrect);
                         }
                     }
                 }
             }
         }
         
-        public void Create(Theme theme)
+        public void Create(Answer model)
         {
             using (var con = _connectionManager.GetConnection())
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = $"INSERT INTO Theme VALUES ({theme.Name});";
+                    command.CommandText = $"INSERT INTO Answer VALUES ({model.QuestionId},{model.Text},{model.IsCorrect}]);";
                     command.ExecuteReader().Dispose();
                 }
             }
         }
 
-        public void Update(Theme theme)
+        public void Update(Answer model)
         {
             using (var con = _connectionManager.GetConnection())
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = $"UPDATE Theme SET name = {theme.Name} WHERE id = {theme.ID};";
+                    command.CommandText = $"UPDATE Answer SET text = {model.Text},is_correcr = {model.IsCorrect} WHERE id = {model.ID};";
                     command.ExecuteReader().Dispose();
                 }
             }
@@ -71,10 +74,12 @@ namespace Pryanik.DB.ModelControllers
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = $"DELETE FROM Theme WHERE id = {id};";
+                    command.CommandText = $"DELETE FROM Answer WHERE id = {id};";
                     command.ExecuteReader().Dispose();
                 }
             }
         }
+
+        
     }
 }

@@ -8,7 +8,8 @@ namespace Pryanik.DB.ModelControllers
 
     public interface ITestController : ModelControllerBase<Test>
     {
-       
+        IEnumerable<Test> GetByThemeId(int id);
+        Test GetById(int id);
     }
     public class TestController : ITestController
     {
@@ -22,30 +23,6 @@ namespace Pryanik.DB.ModelControllers
             _connectionManager = connectionManager;
         }
         
-        public IEnumerable<Test> GetAll()
-        {
-            using(var con = _connectionManager.GetConnection())
-            {
-                using (var command = con.CreateCommand())
-                {
-                    command.CommandText = "SELECT * FROM Test;";
-                    var reader = command.ExecuteReader();
-                    using (reader)
-                    {
-                        while (reader.Read())
-                        {
-                            var id = reader.GetInt32(0);
-                            var themeId = reader.GetInt32(1);
-                            var name = reader.GetString(2);
-                            var dur = reader.GetInt32(3);
-                            
-                            yield return new Test(id,themeId,name,dur);
-                        }
-                    }
-                }
-            }
-        }
-
         public Test GetById(int id)
         {
             Test test;
@@ -53,7 +30,7 @@ namespace Pryanik.DB.ModelControllers
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = $"SELECT FROM Test WHERE Id = {id};";
+                    command.CommandText = $"SELECT FROM Test WHERE id = {id};";
                     var reader = command.ExecuteReader();
                     using (reader)
                     {
@@ -68,6 +45,29 @@ namespace Pryanik.DB.ModelControllers
             }
 
             return test;
+        }
+
+        public IEnumerable<Test> GetByThemeId(int themeId)
+        {
+            using(var con = _connectionManager.GetConnection())
+            {
+                using (var command = con.CreateCommand())
+                {
+                    command.CommandText = $"SELECT FROM Test WHERE theme_id = {themeId};";
+                    var reader = command.ExecuteReader();
+                    using (reader)
+                    {
+                        while (reader.Read())
+                        {
+                            var id = reader.GetInt32(0);
+                            var name = reader.GetString(2);
+                            var dur = reader.GetInt32(3);
+                            
+                            yield return new Test(id,themeId,name,dur);
+                        }
+                    }
+                }
+            }
         }
 
         public void Create(Test model)
@@ -100,7 +100,7 @@ namespace Pryanik.DB.ModelControllers
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = $"DELETE FROM Test WHERE Id = {id};";
+                    command.CommandText = $"DELETE FROM Test WHERE id = {id};";
                     command.ExecuteReader().Dispose();
                 }
             }

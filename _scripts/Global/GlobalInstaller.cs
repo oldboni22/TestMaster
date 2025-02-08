@@ -24,6 +24,8 @@ public class GlobalInstaller : MonoInstaller
     {
         Container.Bind<IThemeController>().To<ThemeController>().FromNew().AsCached();
         Container.Bind<ITestController>().To<TestController>().FromNew().AsCached();
+        Container.Bind<IQuestionController>().To<QuestionController>().FromNew().AsCached();
+        Container.Bind<IAnswerController>().To<AnswerController>().FromNew().AsCached();
     }
     
 }
