@@ -47,7 +47,7 @@ namespace Pryanik.DB.ModelControllers
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = $"INSERT INTO Theme VALUES ({theme.Name});";
+                    command.CommandText = $"INSERT INTO Theme VALUES ({theme.Text});";
                     command.ExecuteReader().Dispose();
                 }
             }
@@ -59,7 +59,7 @@ namespace Pryanik.DB.ModelControllers
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = $"UPDATE Theme SET name = {theme.Name} WHERE id = {theme.ID};";
+                    command.CommandText = $"UPDATE Theme SET name = {theme.Text} WHERE id = {theme.ID};";
                     command.ExecuteReader().Dispose();
                 }
             }

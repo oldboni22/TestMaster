@@ -15,10 +15,8 @@ namespace Pryanik.DB.ModelControllers
     {
 
         private IDbConnectionManager _connectionManager;
-
-
-        [Inject]
-        private void Init(IDbConnectionManager connectionManager)
+        
+        public TestController(IDbConnectionManager connectionManager)
         { 
             _connectionManager = connectionManager;
         }
@@ -39,7 +37,8 @@ namespace Pryanik.DB.ModelControllers
                         var themeId = reader.GetInt32(1);
                         var name = reader.GetString(2);
                         var dur = reader.GetInt32(3);
-                        test = new Test(id, themeId, name, dur);
+                        var len = reader.GetInt32(4);
+                        test = new Test(id, themeId, name, dur,len);
                     }
                 }
             }
@@ -62,8 +61,9 @@ namespace Pryanik.DB.ModelControllers
                             var id = reader.GetInt32(0);
                             var name = reader.GetString(2);
                             var dur = reader.GetInt32(3);
+                            var len = reader.GetInt32(4);
                             
-                            yield return new Test(id,themeId,name,dur);
+                            yield return new Test(id,themeId,name,dur,len);
                         }
                     }
                 }
@@ -76,7 +76,7 @@ namespace Pryanik.DB.ModelControllers
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = $"INSERT INTO Test VALUES ({model.ThemeId},{model.Name},{model.Duration});";
+                    command.CommandText = $"INSERT INTO Test VALUES ({model.ThemeId},{model.Text},{model.Duration});";
                     command.ExecuteReader().Dispose();
                 }
             }
@@ -88,7 +88,7 @@ namespace Pryanik.DB.ModelControllers
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = $"UPDATE Test SET name = {model.Name},duration = {model.Duration} WHERE id = {model.ID};";
+                    command.CommandText = $"UPDATE Test SET name = {model.Text},duration = {model.Duration},lenght = {model.Length} WHERE id = {model.ID};";
                     command.ExecuteReader().Dispose();
                 }
             }

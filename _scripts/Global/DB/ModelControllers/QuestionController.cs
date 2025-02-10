@@ -12,12 +12,10 @@ namespace Pryanik.DB.ModelControllers
     {
         private IDbConnectionManager _connectionManager;
 
-        [Inject]
-        private void Init(IDbConnectionManager connectionManager)
-        { 
+        public QuestionController(IDbConnectionManager connectionManager)
+        {
             _connectionManager = connectionManager;
         }
-        
 
         public IEnumerable<Question> GetByTestId(int testId)
         {
@@ -35,7 +33,7 @@ namespace Pryanik.DB.ModelControllers
                             var text = reader.GetString(2);
                             var len = reader.GetInt32(3);
                             
-                            yield return new Question(id,testId,len,text);
+                            yield return new Question(id,testId,text);
                         }
                     }
                 }
@@ -48,7 +46,7 @@ namespace Pryanik.DB.ModelControllers
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = $"INSERT INTO Question VALUES ({model.TestId},{model.Length},{model.Text}]);";
+                    command.CommandText = $"INSERT INTO Question VALUES ({model.TestId},{model.Text}]);";
                     command.ExecuteReader().Dispose();
                 }
             }
@@ -60,7 +58,7 @@ namespace Pryanik.DB.ModelControllers
             {
                 using (var command = con.CreateCommand())
                 {
-                    command.CommandText = $"UPDATE Question SET text = {model.Text},length = {model.Length} WHERE id = {model.ID};";
+                    command.CommandText = $"UPDATE Question SET text = {model.Text}, WHERE id = {model.ID};";
                     command.ExecuteReader().Dispose();
                 }
             }

@@ -1,17 +1,10 @@
 namespace Pryanik.Db.Models
 {
-    public struct Theme
+    public class Theme : ModelBase
     {
-        private readonly int _id;
-        private readonly string _name;
-        
-        public int ID => _id;
-        public string Name => _name;
-
-        public Theme(int id, string name)
+        public Theme(int id, string text) : base(id,text)
         {
-            _id = id;
-            _name = name;
+        
         }
     }
 }

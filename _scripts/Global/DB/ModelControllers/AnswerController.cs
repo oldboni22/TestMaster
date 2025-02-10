@@ -15,8 +15,7 @@ namespace Pryanik.DB.ModelControllers
         
         private IDbConnectionManager _connectionManager;
 
-        [Inject]
-        private void Init(IDbConnectionManager connectionManager)
+        public AnswerController(IDbConnectionManager connectionManager)
         { 
             _connectionManager = connectionManager;
         }

@@ -1,24 +1,21 @@
 ﻿namespace Pryanik.Db.Models
 {
-    public struct Test
+    public class Test : ModelBase
     {
-        private int _id;
-        private int _themeId;
-        private string _name;
-        private int _duration;
+        
+        private readonly int _themeId;
+        private readonly int _duration;
+        private readonly int _length;
 
-        public int ID => _id;
+        public int Length => _length;
         public int ThemeId => _themeId;
-        public string Name => _name;
         public int Duration => _duration;
-
-
-        public Test(int id, int themeId, string name, int duration)
+        
+        public Test(int id, int themeId, string text, int duration,int length) : base(id,text)
         {
-            _id = id;
             _themeId = themeId;
-            _name = name;
             _duration = duration;
+            _length = length;
         }
     }
 }
