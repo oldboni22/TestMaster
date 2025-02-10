@@ -15,6 +15,8 @@ namespace Pryanik.Admin.Editor.StateMachine
         private EditorState _theme, _test, _question, _answer;
         private EditorObject _curObj;
 
+        private EditorMode _mode = EditorMode.Navigation;
+        
         public EditorStateMachine(IModelControllerHub controllerHub, IEditorWindowsManager editorWindowsManager)
         {
             
@@ -38,25 +40,26 @@ namespace Pryanik.Admin.Editor.StateMachine
                     break;
             }
         }
-        
-        public void OnDelete(int id)
-        {
-            _curState.OnDelete(id);
-        }
-
-        public void OnUpdate(ModelBase model)
-        {
-            _curState.OnUpdate(model);
-        }
 
         public void OnCreate()
         {
             _curState.OnCreate();
         }
 
-        public void OnNextLayer(int id)
+        public void OnObjectButtonClick(ModelBase model)
         {
-            _curState.EnterNextState(id);            
+            switch (_mode)
+            {
+                case EditorMode.Navigation:
+                    _curState.EnterNextState(model.ID);
+                    break;
+                case EditorMode.Delete:
+                    _curState.OnDelete(model.ID);
+                    break;
+                case EditorMode.Edit:
+                    _curState.OnUpdate(model);
+                    break;
+            }
         }
 
         public void OnPrevLayer()

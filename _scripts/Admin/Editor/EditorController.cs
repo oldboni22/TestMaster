@@ -7,13 +7,15 @@ using Zenject;
 
 namespace Pryanik.Admin.Editor
 {
+    public enum EditorMode
+    {
+        Navigation,Edit,Delete
+    }
+    
     public interface IEditorController
     {
-        void OnDelete(int id);
-        void OnUpdate(ModelBase model);
+        void OnObjectButtonClick(ModelBase model);
         void OnCreate();
-
-        void OnNextLayer(int id);
         void OnPrevLayer();
     }
     public class EditorController

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Pryanik.Admin.Editor.StateMachine;
 using Pryanik.Admin.Editor.UI;
+using Pryanik.DB.ModelControllers;
 using Pryanik.Db.Models;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Pryanik
 
         protected readonly EditorStateMachine _stateMachine;
         protected readonly IEditorWindowsManager _editorWindowsManager;
+        protected readonly IGridController _gridController;
         
         protected int _upperId;
         public abstract void OnDelete(int id);
@@ -25,10 +27,11 @@ namespace Pryanik
         public abstract void EnterNextState(int id);
         public abstract void EnterPrevState();
 
-        protected EditorState(EditorStateMachine stateMachine, IEditorWindowsManager editorWindowsManager)
+        protected EditorState(EditorStateMachine stateMachine, IEditorWindowsManager editorWindowsManager,IGridController gridController)
         {
             _stateMachine = stateMachine;
             _editorWindowsManager = editorWindowsManager;
+            _gridController = gridController;
         }
     }
 }

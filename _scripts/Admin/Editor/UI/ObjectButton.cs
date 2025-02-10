@@ -34,6 +34,6 @@ namespace Pryanik.Admin.Editor.UI
             gameObject.SetActive(false);
         }
 
-        public void OnClick() => _editorController.OnNextLayer(_model.ID);
+        public void OnClick() => _editorController.OnObjectButtonClick(_model);
     }
 }
