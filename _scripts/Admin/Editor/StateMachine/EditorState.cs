@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Pryanik.Admin.Editor.StateMachine;
 using Pryanik.Admin.Editor.UI;
-using Pryanik.DB.ModelControllers;
 using Pryanik.Db.Models;
-using UnityEngine;
+
 
 namespace Pryanik
 {
@@ -17,8 +15,8 @@ namespace Pryanik
         
         protected int _upperId;
         public abstract void OnDelete(int id);
-        public abstract void OnUpdate(ModelBase model);
-        public abstract void OnCreate();
+        public abstract Task OnUpdate(ModelBase model);
+        public abstract Task OnCreate();
 
         public void SetUpperId(int id) => _upperId = id;
         

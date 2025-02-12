@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
+using System.Threading.Tasks;
 using Pryanik.Db.Models;
 using TMPro;
 using UnityEngine;
@@ -28,12 +27,15 @@ namespace Pryanik.Admin.Editor.UI
             
             gameObject.SetActive(true);
         }
-
+        
         public void Reset()
         {
             gameObject.SetActive(false);
         }
 
-        public void OnClick() => _editorController.OnObjectButtonClick(_model);
+        public async Task OnClick()
+        {
+            await _editorController.OnObjectButtonClick(_model);
+        }
     }
 }

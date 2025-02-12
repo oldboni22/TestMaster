@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using Pryanik._scripts.Admin.Editor;
 using Pryanik.Admin.Editor.UI;
 using Pryanik.DB.ModelControllers;
 using Pryanik.Db.Models;
-using UnityEngine;
+using Task = System.Threading.Tasks.Task;
 
 namespace Pryanik.Admin.Editor.StateMachine
 {
@@ -12,17 +10,22 @@ namespace Pryanik.Admin.Editor.StateMachine
     {
         private EditorState _curState;
 
-        private EditorState _theme, _test, _question, _answer;
-        private EditorObject _curObj;
-
+        private readonly EditorState _theme, _test, _question, _answer;
         private EditorMode _mode = EditorMode.Navigation;
         
-        public EditorStateMachine(IModelControllerHub controllerHub, IEditorWindowsManager editorWindowsManager)
+        public EditorStateMachine(IModelControllerHub controllerHub, IEditorWindowsManager editorWindowsManager,IGridController gridController, IModelControllerHub modelControllerHub)
         {
+            var factory = new EditorStateFactory(gridController, modelControllerHub, editorWindowsManager, this);
             
+            _theme = factory.GetThemeState();
+            _test = factory.GetTestState();
+            _question = factory.GetQuestionState();
+            _answer = factory.GetAnswerState();
+            
+            SwitchState(EditorObject.Theme);
         }
         
-        public void SwitchState(EditorObject editorObject)
+        public void SwitchState(EditorObject editorObject,int upperId = -1)
         {
             switch (editorObject)
             {
@@ -39,14 +42,17 @@ namespace Pryanik.Admin.Editor.StateMachine
                     _curState = _question;
                     break;
             }
+            
+            if(upperId != -1)
+                _curState.SetUpperId(upperId);
+            _curState.OnStateEnter();
         }
 
-        public void OnCreate()
+        public async Task OnCreate()
         {
-            _curState.OnCreate();
+            await _curState.OnCreate();
         }
-
-        public void OnObjectButtonClick(ModelBase model)
+        public async Task OnObjectButtonClick(ModelBase model)
         {
             switch (_mode)
             {
@@ -57,7 +63,7 @@ namespace Pryanik.Admin.Editor.StateMachine
                     _curState.OnDelete(model.ID);
                     break;
                 case EditorMode.Edit:
-                    _curState.OnUpdate(model);
+                    await _curState.OnUpdate(model);
                     break;
             }
         }
@@ -65,6 +71,11 @@ namespace Pryanik.Admin.Editor.StateMachine
         public void OnPrevLayer()
         {
             _curState.EnterPrevState();
+        }
+
+        public void SwitchEditorMode(EditorMode mode)
+        {
+            _mode = mode;
         }
     }
 }
