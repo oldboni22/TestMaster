@@ -4,7 +4,7 @@ using Pryanik.Admin.Editor.UI;
 using Pryanik.Db.Models;
 
 
-namespace Pryanik
+namespace Pryanik.Admin.Editor.StateMachine
 {
     public abstract class EditorState
     {

@@ -13,5 +13,6 @@
             _questionId = questionId;
             _isCorrect = isCorrect == 1;
         }
+        
     }
 }

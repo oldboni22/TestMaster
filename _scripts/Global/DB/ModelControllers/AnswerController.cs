@@ -42,7 +42,7 @@ namespace Pryanik.DB.ModelControllers
                 }
             }
         }
-        
+
         public void Create(Answer model)
         {
             using (var con = _connectionManager.GetConnection())

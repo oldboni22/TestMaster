@@ -4,7 +4,7 @@
     {
         private readonly int _id;
         private readonly string _text;
-
+        
         public int ID => _id;
         public string Text => _text;
 
@@ -13,6 +13,7 @@
             _id = id;
             _text = text;
         }
+        
     }
     
 }

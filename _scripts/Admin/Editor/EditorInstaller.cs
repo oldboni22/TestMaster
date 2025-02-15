@@ -19,9 +19,11 @@ namespace Pryanik.Admin.Editor
 
         public override void InstallBindings()
         {
-            Container.BindMemoryPool<ObjectButtonPool>().WithInitialSize(5).WithFactoryArguments(_buttonParent).FromInstance(_objectButtonPrefab);
-            
+            Container.BindMemoryPool<ObjectButtonPool>().WithInitialSize(5).WithFactoryArguments(_buttonParent)
+                .FromInstance(_objectButtonPrefab);
             Container.BindInterfacesTo<GridController>().FromInstance(_gridController).AsCached();
+
+            Container.BindInterfacesTo<EditorController>().FromNew().AsCached();
         }
     }
 }

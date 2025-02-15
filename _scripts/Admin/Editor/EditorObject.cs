@@ -1,4 +1,4 @@
-﻿namespace Pryanik._scripts.Admin.Editor
+﻿namespace Pryanik.Admin.Editor
 {
     public enum EditorObject
     {

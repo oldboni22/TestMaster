@@ -18,8 +18,11 @@ namespace Pryanik.Admin.Editor
         Task OnObjectButtonClick(ModelBase model);
         Task OnCreate();
         void OnPrevLayer();
+        void OnSearch(string searchStr);
+        void SwitchState(EditorObject editorObject);
+        void SwitchMode(EditorMode mode);
     }
-    public class EditorController
+    public class EditorController : IEditorController
     {
         private readonly EditorStateMachine _stateMachine;
         
@@ -27,6 +30,36 @@ namespace Pryanik.Admin.Editor
         public EditorController(IGridController gridController,IEditorWindowsManager editorWindowsManager,IModelControllerHub modelControllerHub)
         {
             _stateMachine = new EditorStateMachine(modelControllerHub,editorWindowsManager,gridController,modelControllerHub);
+        }
+
+        public async Task OnObjectButtonClick(ModelBase model)
+        {
+            await _stateMachine.OnObjectButtonClick(model);
+        }
+
+        public async Task OnCreate()
+        {
+            await _stateMachine.OnCreate();
+        }
+
+        public void OnPrevLayer()
+        {
+            _stateMachine.OnPrevLayer();
+        }
+
+        public void OnSearch(string searchStr)
+        {
+            _stateMachine.OnSearch(searchStr);
+        }
+
+        public void SwitchState(EditorObject editorObject)
+        {
+            _stateMachine.SwitchState(editorObject);
+        }
+
+        public void SwitchMode(EditorMode mode)
+        {
+            _stateMachine.SwitchEditorMode(mode);
         }
     }
 }

@@ -5,21 +5,25 @@ using Pryanik.Db.Models;
 using UnityEngine;
 using Zenject;
 
-public class GlobalInstaller : MonoInstaller
+namespace Pryanik
 {
-    [SerializeField] private string _dbName;
-    public override void InstallBindings()
+    public class GlobalInstaller : MonoInstaller
     {
+        [SerializeField] private string _dbName;
 
-        Container.BindInterfacesTo<DbConnectionManager>().FromInstance(new DbConnectionManager(_dbName)).AsCached();
+        public override void InstallBindings()
+        {
 
-        Container.BindInterfacesTo<ModelControllerHub>().FromNew().AsCached();
-        
-        Container.BindInterfacesTo<AdminManager>().FromNew().AsCached();
-        Container.BindInterfacesTo<UserManager>().FromNew().AsCached();
-        Container.BindInterfacesTo<SelectedTestManager>().FromNew().AsCached();
+            Container.BindInterfacesTo<DbConnectionManager>().FromInstance(new DbConnectionManager(_dbName)).AsCached();
+
+            Container.BindInterfacesTo<ModelControllerHub>().FromNew().AsCached();
+
+            Container.BindInterfacesTo<AdminManager>().FromNew().AsCached();
+            Container.BindInterfacesTo<UserManager>().FromNew().AsCached();
+            Container.BindInterfacesTo<SelectedTestManager>().FromNew().AsCached();
+        }
+
+
+
     }
-
-
-    
 }

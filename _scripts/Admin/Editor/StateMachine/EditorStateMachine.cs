@@ -1,4 +1,4 @@
-using Pryanik._scripts.Admin.Editor;
+
 using Pryanik.Admin.Editor.UI;
 using Pryanik.DB.ModelControllers;
 using Pryanik.Db.Models;
@@ -76,6 +76,11 @@ namespace Pryanik.Admin.Editor.StateMachine
         public void SwitchEditorMode(EditorMode mode)
         {
             _mode = mode;
+        }
+
+        public void OnSearch(string searchStr)
+        {
+            
         }
     }
 }

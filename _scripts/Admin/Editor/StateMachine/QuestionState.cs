@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Pryanik._scripts.Admin.Editor;
 using Pryanik.Admin.Editor.UI;
 using Pryanik.DB.ModelControllers;
 using Pryanik.Db.Models;
@@ -22,16 +21,18 @@ namespace Pryanik.Admin.Editor.StateMachine
 
         public override async Task OnUpdate(ModelBase model)
         {
-            _editorWindowsManager.OpenUpdateWindow(EditorObject.Question,model);
-            await _editorWindowsManager.WindowOpenedWaiter();
+            
+            var q = (Question)await _editorWindowsManager.OpenUpdateWindow(EditorObject.Question,model);
+            _questionController.Update(q);
             _gridController.Display(_questionController.GetByTestId(_upperId));
         }
         
 
         public override async Task OnCreate()
         {
-            _editorWindowsManager.OpenCreateWindow(EditorObject.Question);
-            await _editorWindowsManager.WindowOpenedWaiter();
+            
+            var q = (Question)await _editorWindowsManager.OpenCreateWindow(EditorObject.Question,_upperId);
+            _questionController.Create(q);
             _gridController.Display(_questionController.GetByTestId(_upperId));
         }
 
